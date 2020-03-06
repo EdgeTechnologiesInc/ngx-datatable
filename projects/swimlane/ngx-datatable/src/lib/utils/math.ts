@@ -107,7 +107,6 @@ export function forceFillColumnWidths(
 
   let additionWidthPerColumn = 0;
   let exceedsWindow = false;
-  const totalWidth = columnsToResize.reduce((total, col) => total + col.width, 0);
   let contentWidth = getContentWidth(allColumns, defaultColWidth);
   let remainingWidth = expectedWidth - contentWidth;
   const columnsProcessed: any[] = [];
@@ -117,7 +116,7 @@ export function forceFillColumnWidths(
   do {
     additionWidthPerColumn = remainingWidth / columnsToResize.length;
     exceedsWindow = contentWidth >= expectedWidth;
-
+    const totalWidth = Math.max(columnsToResize.reduce((total, col) => total + col.width, 0), 1);
     for (const column of columnsToResize) {
       if (exceedsWindow && allowBleed) {
         column.width = column.$$oldWidth || column.width || defaultColWidth;

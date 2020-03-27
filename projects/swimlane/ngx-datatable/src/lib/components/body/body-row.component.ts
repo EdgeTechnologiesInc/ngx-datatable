@@ -231,7 +231,7 @@ export class DataTableBodyRowComponent implements DoCheck {
     }
   }
 
-  @HostListener('mouseenter', ['$event'])
+  /*@HostListener('mouseenter', ['$event'])
   onMouseenter(event: any): void {
     this.activate.emit({
       type: 'mouseenter',
@@ -239,7 +239,7 @@ export class DataTableBodyRowComponent implements DoCheck {
       row: this.row,
       rowElement: this._element
     });
-  }
+  }*/
 
   recalculateColumns(val: any[] = this.columns): void {
     this._columns = val;

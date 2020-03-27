@@ -1,6 +1,6 @@
 {
   "name": "@edge_technologies/ngx-datatable",
-  "version": "16.0.6",
+  "version": "16.0.7",
   "description": "Fork of ngx-datatable to fix bugs not getting attention on original project.",
   "peerDependencies": {
     "@angular/common": "<9.0.0",

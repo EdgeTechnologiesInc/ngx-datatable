@@ -124,7 +124,8 @@ export function forceFillColumnWidths(
         // const newSize = (column.width || defaultColWidth) + additionWidthPerColumn;
         // Distribute the remaining width proportionally to each column based on its initial width
         const oldSize = column.width || defaultColWidth;
-        const additionalWidthForCol = Math.ceil(oldSize / totalWidth * remainingWidth);
+        // I changed the following line of code to use floor instead of ceil, to avoid horizontal scrollbars: joe
+        const additionalWidthForCol = Math.floor(oldSize / totalWidth * remainingWidth);
         const newSize = oldSize + additionalWidthForCol;
         if (column.minWidth && newSize < column.minWidth) {
           column.width = column.minWidth;

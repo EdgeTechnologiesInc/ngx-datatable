@@ -110,7 +110,8 @@ export function forceFillColumnWidths(
   let contentWidth = getContentWidth(allColumns, defaultColWidth);
   let remainingWidth = expectedWidth - contentWidth;
   const columnsProcessed: any[] = [];
-  const remainingWidthLimit = 1; // when to stop
+  // keep growing until there's less pixels than number of columns: joe
+  const remainingWidthLimit = columnsToResize.length - 1;
 
   // This loop takes care of the
   do {

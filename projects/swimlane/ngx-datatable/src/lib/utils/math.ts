@@ -108,7 +108,9 @@ export function forceFillColumnWidths(
   let additionWidthPerColumn = 0;
   let exceedsWindow = false;
   let contentWidth = getContentWidth(allColumns, defaultColWidth);
-  let remainingWidth = expectedWidth - contentWidth;
+  // browser zoom can make these values have fractions which cause havoc on the looping
+  // user Math.floor() to only deal with whole numbers - joe
+  let remainingWidth = Math.floor(expectedWidth - contentWidth);
   const columnsProcessed: any[] = [];
   // keep growing until there's less pixels than number of columns: joe
   const remainingWidthLimit = columnsToResize.length - 1;
@@ -143,7 +145,9 @@ export function forceFillColumnWidths(
     }
 
     contentWidth = getContentWidth(allColumns);
-    remainingWidth = expectedWidth - contentWidth;
+    // browser zoom can make these values have fractions which cause havoc on the looping
+    // user Math.floor() to only deal with whole numbers - joe
+    remainingWidth = Math.floor(expectedWidth - contentWidth);
     removeProcessedColumns(columnsToResize, columnsProcessed);
   } while (remainingWidth > remainingWidthLimit && columnsToResize.length !== 0);
 }

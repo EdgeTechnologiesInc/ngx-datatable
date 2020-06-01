@@ -260,12 +260,23 @@ export class DataTableHeaderComponent implements OnDestroy {
     return this._columnsByPin[2].columns[index - leftColumnCount - centerColumnCount];
   }
 
-  onSort({ column, prevValue, newValue }: any): void {
+  onSort({ mouseEvent, column, prevValue, newValue }: any): void {
     // if we are dragging don't sort!
     if (column.dragging) {
       return;
     }
 
+    // @EDGE CHANGE
+    // Only queue up multi-column sort when the COMMAND or CTRL key is pressed
+    // Better UX behavior than single clicks always building, because it's difficult to clear the sort
+    // joe
+    if (mouseEvent === undefined || (mouseEvent.ctrlKey !== true && mouseEvent.metaKey !== true)) {
+      if (prevValue === undefined) {
+        this.sorts = [];
+      } else {
+        this.sorts = [{prop: column.prop, dir: prevValue}]
+      }
+    }
     const sorts = this.calcNewSorts(column, prevValue, newValue);
     this.sort.emit({
       sorts,

@@ -14,6 +14,7 @@ import { SelectionType } from '../../types/selection.type';
 import { TableColumn } from '../../types/table-column.type';
 import { nextSortDir } from '../../utils/sort';
 import { SortDirection } from '../../types/sort-direction.type';
+import { $e } from 'codelyzer/angular/styles/chars';
 
 @Component({
   selector: 'datatable-header-cell',
@@ -29,7 +30,7 @@ import { SortDirection } from '../../types/sort-direction.type';
         <input type="checkbox" [checked]="allRowsSelected" (change)="select.emit(!allRowsSelected)" />
       </label>
       <span *ngIf="!column.headerTemplate" class="datatable-header-cell-wrapper">
-        <span class="datatable-header-cell-label draggable" (click)="onSort()" [innerHTML]="name"> </span>
+        <span class="datatable-header-cell-label draggable" (click)="onSort($event)" [innerHTML]="name"> </span>
       </span>
       <ng-template
         *ngIf="column.headerTemplate"
@@ -37,7 +38,7 @@ import { SortDirection } from '../../types/sort-direction.type';
         [ngTemplateOutletContext]="cellContext"
       >
       </ng-template>
-      <span (click)="onSort()" [class]="sortClass"> </span>
+      <span (click)="onSort($event)" [class]="sortClass"> </span>
     </div>
   `,
   host: {
@@ -187,11 +188,13 @@ export class DataTableHeaderCellComponent {
     }
   }
 
-  onSort(): void {
+  onSort($event?): void {
     if (!this.column.sortable) return;
-
     const newValue = nextSortDir(this.sortType, this.sortDir);
+    // @EDGE CHANGE
+    // We need to send the click mouseEvent so that we can check for COMMAND or CTRL keyboard modifiers
     this.sort.emit({
+      mouseEvent: $event,
       column: this.column,
       prevValue: this.sortDir,
       newValue

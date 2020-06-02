@@ -1,4 +1,4 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule, ModuleWithProviders, Provider } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ScrollbarHelper } from './services/scrollbar-helper.service';
 import { DimensionsHelper } from './services/dimensions-helper.service';
@@ -85,10 +85,10 @@ export class NgxDatatableModule {
    * Configure global configuration via INgxDatatableConfig
    * @param configuration
    */
-  static forRoot(configuration: INgxDatatableConfig): ModuleWithProviders {
+  static forRoot(configuration: Provider): ModuleWithProviders {
     return {
       ngModule: NgxDatatableModule,
-      providers: [{ provide: 'configuration', useValue: configuration }]
+      providers: [configuration]
     };
   }
 }

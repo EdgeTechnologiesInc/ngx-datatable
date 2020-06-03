@@ -1,4 +1,4 @@
-import { NgModule, ModuleWithProviders, Provider } from '@angular/core';
+import { ModuleWithProviders, NgModule, Provider } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ScrollbarHelper } from './services/scrollbar-helper.service';
 import { DimensionsHelper } from './services/dimensions-helper.service';
@@ -31,10 +31,11 @@ import { DataTableColumnCellTreeToggle } from './components/columns/tree.directi
 import { DatatableFooterDirective } from './components/footer/footer.directive';
 import { DatatableGroupHeaderTemplateDirective } from './components/body/body-group-header-template.directive';
 import { DataTableSummaryRowComponent } from './components/body/summary/summary-row.component';
+import { NgxDatatableConfigService } from './services/ngxDatatableConfig.service';
 
 @NgModule({
   imports: [CommonModule],
-  providers: [ScrollbarHelper, DimensionsHelper, ColumnChangesService],
+  providers: [ScrollbarHelper, DimensionsHelper, ColumnChangesService, NgxDatatableConfigService],
   declarations: [
     DataTableFooterTemplateDirective,
     VisibilityDirective,
@@ -81,14 +82,26 @@ import { DataTableSummaryRowComponent } from './components/body/summary/summary-
   ]
 })
 export class NgxDatatableModule {
+
+  static readonly DEFAULT_CONFIG: Provider = {
+    provide: 'configuration', useValue: {
+      messages: {
+        emptyMessage: 'No data to display',
+        selectedMessage: 'selected',
+        totalMessage: 'total'
+      }
+    }
+  };
+
   /**
    * Configure global configuration via INgxDatatableConfig
    * @param configuration
    */
-  static forRoot(configuration: Provider): ModuleWithProviders {
+  static forRoot(configuration?: Provider): ModuleWithProviders {
+    const config = configuration || NgxDatatableModule.DEFAULT_CONFIG;
     return {
       ngModule: NgxDatatableModule,
-      providers: [configuration]
+      providers: [config]
     };
   }
 }

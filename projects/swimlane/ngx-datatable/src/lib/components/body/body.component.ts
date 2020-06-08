@@ -15,6 +15,7 @@ import { MouseEvent } from '../../events';
 import { SelectionType } from '../../types/selection.type';
 import { columnsByPin, columnGroupWidths } from '../../utils/column';
 import { RowHeightCache } from '../../utils/row-height-cache';
+import { throttleable } from '../../utils/throttle';
 import { translateXY } from '../../utils/translate';
 
 @Component({
@@ -352,6 +353,8 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
    * Body was scrolled, this is mainly useful for
    * when a user is server-side pagination via virtual scroll.
    */
+
+  @throttleable(200, {leading: false})
   onBodyScroll(event: any): void {
     const scrollYPos: number = event.scrollYPos;
     const scrollXPos: number = event.scrollXPos;
@@ -394,7 +397,10 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
    * Updates the rows in the view port
    */
   updateRows(): void {
-    const { first, last } = this.indexes;
+    let { first, last } = this.indexes;
+    const visibleCount = last-first;
+    first = Math.max(0, first-visibleCount);
+    last = this.rowCount ? Math.min(this.rowCount, last + visibleCount) : last;
     let rowIndex = first;
     let idx = 0;
     const temp: any[] = [];
